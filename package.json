@@ -1,0 +1,23 @@
+{
+    "name": "translation-uploader",
+    "version": "1.0.0",
+    "description": "Upload files and count words in WordPress admin",
+    "scripts": {
+        "start": "wp-scripts start",
+        "build": "wp-scripts build"
+    },
+    "devDependencies": {
+        "@wordpress/scripts": "^26.0.0"
+    },
+    "dependencies": {
+        "docx-preview": "^0.3.5",
+        "jszip": "^3.10.1",
+        "mammoth": "^1.9.0",
+        "pdfjs-dist": "^3.11.174",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+        "react-dropzone": "^14.3.8",
+        "react-select": "^5.10.1",
+        "xlsx": "^0.18.5"
+    }
+}
