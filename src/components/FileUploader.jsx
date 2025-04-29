@@ -17,26 +17,32 @@ export default function FileUploader({ files, setFiles, setTotalWords, sourceLan
         disabled: !sourceLanguage
     });
 
+
+    const removeFile = (id, wordCount) => {
+        setFiles(prev => prev.filter(file => file.id !== id));
+        setTotalWords(prev => prev - wordCount);
+    };
+
     const uploadedDoc =  <>
-                            <div style={{marginTop:'20px'}} className='sourceLang'>
-                                    <p>2</p>
-                                    <span>Upload Document file(s)</span>
-                                </div>
-                                <p className='originalLang'>
-                                It is extremely important to us that your files are secure with us.Your files are exclusively stored on servers in Hong Kong.All of our "In-house" translators sign NDA's(Non-disclosure argument)and we train them to follow secure working practices.
-                                </p>
-                        </>
+                        <div style={{marginTop:'20px'}} className='sourceLang'>
+                                <p>2</p>
+                                <span>Upload Document file(s)</span>
+                        </div>
+                        <p className='originalLang'>
+                        It is extremely important to us that your files are secure with us.Your files are exclusively stored on servers in Hong Kong.All of our "In-house" translators sign NDA's(Non-disclosure argument)and we train them to follow secure working practices.
+                        </p>
+                    </>
 
     const showAllFiles = <div className='showAllLoadedFiles'>
-                            {files?.map((file, index) => (
-                                <div key={index} className='file-card'>
+                            {files?.map((file) => (
+                                <div key={file.id} className='file-card'>
                                     <div className='file-icon'>{getFileIcon(file.file.name)}</div>
                                     <div className='file-info'>
                                         <h4 className='file-name'>{file.file.name}</h4>
                                         <p className='file-status'>File Uploaded Successfully</p>
                                         <p className='word-count'>Word Count: {file.wordCount}</p>
                                     </div>
-                                    <button className='cancel-btn'>Cancel Upload</button>
+                                    <button className='cancel-btn' onClick={() => removeFile(file.id, file.wordCount) }>Cancel Upload</button>
                                 </div>
                              ))}
                         </div> 

@@ -5,11 +5,6 @@ import { useFileUpload } from '../utils/dropzoneConfig';
 export default function UploadedFiles({ files, setFiles, totalWords, setTotalWords }) {
     const { getRootProps, getInputProps } = useDropzone(useFileUpload(setFiles, setTotalWords));
     
-    const removeFile = (id, wordCount) => {
-        setFiles(prev => prev.filter(file => file.id !== id));
-        setTotalWords(prev => prev - wordCount);
-    };
-
     return (
         <div className='showUploadedFiles'>
             <div className='showUploadedFilesChild1'>
