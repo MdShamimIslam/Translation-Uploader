@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import LanguageSelector from './components/LanguageSelector';
 import FileUploader from './components/FileUploader';
 import UploadedFiles from './components/UploadedFiles';
+import './App.css';
 
 export default function App() {
     const [sourceLanguage, setSourceLanguage] = useState(null);
@@ -10,7 +11,7 @@ export default function App() {
     const [totalWords, setTotalWords] = useState(0);
 
     return (
-        <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+        <div className='ftlContainer'>
             <h2>Translation Uploader</h2>
             <LanguageSelector
                 sourceLanguage={sourceLanguage}
@@ -29,7 +30,8 @@ export default function App() {
                 setFiles={setFiles}
                 setTotalWords={setTotalWords}
             />
-            <h3>Total Words: {totalWords}</h3>
+            <h3>Total Word Count: {totalWords}</h3>
+            <h3>Total USD: ${totalWords}</h3>
         </div>
     );
 }

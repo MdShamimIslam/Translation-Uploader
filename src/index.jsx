@@ -1,17 +1,13 @@
-import { render } from '@wordpress/element';
+import { createRoot } from '@wordpress/element';
 import App from './App';
 
 document.addEventListener('DOMContentLoaded', function () {
-  const root = document.getElementById('translation-uploader-root');
-  if (root) {
-    render(<App />, root);
+  const container = document.getElementById('translation-uploader-root');
+  if (container) {
+    const root = createRoot(container);
+    root.render(<App />);
   }
 });
 
 
-// import { createRoot } from 'react-dom/client';
-// import App from './App';
 
-// const container = document.getElementById('translation-uploader-admin');
-// const root = createRoot(container);
-// root.render(<App />);

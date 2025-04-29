@@ -1,17 +1,8 @@
 import React from 'react';
 import Select from 'react-select';
-
-const languageOptions = [
-    { value: 'en', label: 'English' },
-    { value: 'bn', label: 'Bengali' },
-    { value: 'fr', label: 'French' },
-    { value: 'de', label: 'German' },
-    { value: 'es', label: 'Spanish' },
-    { value: 'hi', label: 'Hindi' },
-];
+import { languageOptions } from '../utils/options';
 
 export default function LanguageSelector({ sourceLanguage, setSourceLanguage, targetLanguages, setTargetLanguages }) {
-    // Filter out the selected source language from target options
     const targetOptions = languageOptions.filter(lang => 
         !sourceLanguage || lang.value !== sourceLanguage.value
     );
@@ -24,7 +15,6 @@ export default function LanguageSelector({ sourceLanguage, setSourceLanguage, ta
                 value={sourceLanguage}
                 onChange={(selected) => {
                     setSourceLanguage(selected);
-                    // Clear target languages when source language changes
                     setTargetLanguages([]);
                 }}
                 placeholder="Select source language"

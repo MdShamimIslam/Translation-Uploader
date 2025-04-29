@@ -10,7 +10,6 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 export default function FileUploader({ files, setFiles, setTotalWords, sourceLanguage }) {
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: async (acceptedFiles) => {
-            console.log("click");
             for (let file of acceptedFiles) {
                 const wordCount = await countWords(file);
                 const newFile = {

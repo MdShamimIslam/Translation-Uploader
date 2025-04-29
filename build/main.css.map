@@ -1,0 +1,1 @@
+{"version":3,"file":"main.css","mappings":";;;AAAA;IACI,aAAa;AACjB","sources":["webpack://translation-uploader/./src/App.css"],"sourcesContent":[".ftlContainer{\r\n    padding: 20px;\r\n}\r\n\r\n"],"names":[],"sourceRoot":""}
