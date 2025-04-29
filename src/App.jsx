@@ -22,6 +22,7 @@ export default function App() {
                 files={files}
                 setFiles={setFiles}
                 setTotalWords={setTotalWords}
+                sourceLanguage={sourceLanguage}
             />
             <UploadedFiles
                 files={files}

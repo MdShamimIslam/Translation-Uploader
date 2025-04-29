@@ -11,23 +11,33 @@ const languageOptions = [
 ];
 
 export default function LanguageSelector({ sourceLanguage, setSourceLanguage, targetLanguages, setTargetLanguages }) {
+    // Filter out the selected source language from target options
+    const targetOptions = languageOptions.filter(lang => 
+        !sourceLanguage || lang.value !== sourceLanguage.value
+    );
+
     return (
         <div style={{ marginBottom: "20px" }}>
             <label>Source Language:</label>
             <Select
                 options={languageOptions}
                 value={sourceLanguage}
-                onChange={setSourceLanguage}
+                onChange={(selected) => {
+                    setSourceLanguage(selected);
+                    // Clear target languages when source language changes
+                    setTargetLanguages([]);
+                }}
                 placeholder="Select source language"
             />
             <br />
             <label>Target Languages:</label>
             <Select
-                options={languageOptions}
+                options={targetOptions}
                 value={targetLanguages}
                 onChange={setTargetLanguages}
                 isMulti
                 placeholder="Select target languages"
+                isDisabled={!sourceLanguage}
             />
         </div>
     );

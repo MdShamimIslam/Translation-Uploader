@@ -7,10 +7,10 @@ import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
-export default function FileUploader({ setFiles, setTotalWords }) {
-  
+export default function FileUploader({ files, setFiles, setTotalWords, sourceLanguage }) {
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: async (acceptedFiles) => {
+            console.log("click");
             for (let file of acceptedFiles) {
                 const wordCount = await countWords(file);
                 const newFile = {
@@ -32,8 +32,17 @@ export default function FileUploader({ setFiles, setTotalWords }) {
             'text/x-python': ['.py'],
             'text/x-java': ['.java'],
             'text/x-c': ['.c', '.cpp']
-        }
+        },
+        disabled: !sourceLanguage
     });
+
+    if (!sourceLanguage) {
+        return (
+            <div style={{ border: "2px dashed #ccc", padding: "20px", marginBottom: "20px", textAlign: "center" }}>
+                <p style={{ color: '#666' }}>Please select a source language first</p>
+            </div>
+        );
+    }
 
     return (
         <div style={{ border: "2px dashed #ccc", padding: "20px", marginBottom: "20px", textAlign: "center" }}>
