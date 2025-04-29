@@ -1,58 +1,74 @@
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
+import { useFileUpload } from '../utils/dropzoneConfig';
 import mammoth from 'mammoth';
 import * as XLSX from 'xlsx';
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry';
+import { uploadIcon } from '../utils/icons';
+import supportIcons from '../assets/icons.png';
+import { getFileIcon } from '../utils/dropzoneConfig';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 export default function FileUploader({ files, setFiles, setTotalWords, sourceLanguage }) {
     const { getRootProps, getInputProps } = useDropzone({
-        onDrop: async (acceptedFiles) => {
-            for (let file of acceptedFiles) {
-                const wordCount = await countWords(file);
-                const newFile = {
-                    id: Date.now() + Math.random(),
-                    file,
-                    wordCount,
-                };
-                setFiles(prev => [...prev, newFile]);
-                setTotalWords(prev => prev + wordCount);
-            }
-        },
-        accept: {
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
-            'application/vnd.openxmlformats-officedocument.presentationml.presentation': ['.pptx'],
-            'application/pdf': ['.pdf'],
-            'text/plain': ['.txt'],
-            'application/javascript': ['.js'],
-            'text/x-python': ['.py'],
-            'text/x-java': ['.java'],
-            'text/x-c': ['.c', '.cpp']
-        },
+        ...useFileUpload(setFiles, setTotalWords),
         disabled: !sourceLanguage
     });
 
+    const uploadedDoc =  <>
+                            <div style={{marginTop:'20px'}} className='sourceLang'>
+                                    <p>2</p>
+                                    <span>Upload Document file(s)</span>
+                                </div>
+                                <p className='originalLang'>
+                                It is extremely important to us that your files are secure with us.Your files are exclusively stored on servers in Hong Kong.All of our "In-house" translators sign NDA's(Non-disclosure argument)and we train them to follow secure working practices.
+                                </p>
+                        </>
+
+    const showAllFiles = <div className='showAllLoadedFiles'>
+                            {files?.map((file, index) => (
+                                <div key={index} className='file-card'>
+                                    <div className='file-icon'>{getFileIcon(file.file.name)}</div>
+                                    <div className='file-info'>
+                                        <h4 className='file-name'>{file.file.name}</h4>
+                                        <p className='file-status'>File Uploaded Successfully</p>
+                                        <p className='word-count'>Word Count: {file.wordCount}</p>
+                                    </div>
+                                    <button className='cancel-btn'>Cancel Upload</button>
+                                </div>
+                             ))}
+                        </div> 
+    
+
     if (!sourceLanguage) {
         return (
-            <div style={{ border: "2px dashed #ccc", padding: "20px", marginBottom: "20px", textAlign: "center" }}>
-                <p style={{ color: '#666' }}>Please select a source language first</p>
+            <>
+            {uploadedDoc}
+            <div style={{textAlign:'center'}} className='uplaodFiles'>
+               {uploadIcon}
+                <p className='first'>Please select a source language first</p>
+                <p className='supportFile'>Supported files</p>
+               <img src={supportIcons} alt="support-files-icons" />
             </div>
+            </>
         );
     }
 
     return (
-        <div style={{ border: "2px dashed #ccc", padding: "20px", marginBottom: "20px", textAlign: "center" }}>
-            <div {...getRootProps()} style={{ cursor: 'pointer' }}>
+        <>
+        {uploadedDoc}
+        <div className='uplaodFiles' style={{cursor: 'pointer'}}>
+            <div style={{textAlign:'center'}} {...getRootProps()}>
                 <input {...getInputProps()} />
-                <p>Drag and drop some files here, or click to select files</p>
-                <p style={{ fontSize: '12px', color: '#666' }}>
-                    Supported files: PDF, DOCX, XLSX, PPTX, TXT, JS, PY, JAVA, C, CPP
-                </p>
+                <p className='first'>Drag and drop some files here, or click to select files</p>
+                <p className='supportFile'>Supported files</p>
+                <img src={supportIcons} alt="support-files-icons" />
             </div>
+            {showAllFiles} 
         </div>
+        </>
     );
 }
 
@@ -88,5 +104,7 @@ async function countWords(file) {
 
     return text.trim().split(/\s+/).length;
 }
+
+export { countWords };
 
 

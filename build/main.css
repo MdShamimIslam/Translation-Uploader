@@ -2,8 +2,208 @@
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/App.css ***!
   \*****************************************************************************************************************************************************************/
 .ftlContainer{
-    padding: 20px;
+    .sourceLang{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+       p{
+        height: 35px;
+        width: 35px;
+        background-color: #F17D3A;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 500;        
+       }
+       span{
+        font-weight: 500;
+        font-size: larger;
+       };
+    }
+    .originalLang{
+        font-size: 15px;
+        margin-top: -5px;
+    }
+    /* language Selector css */
+    .languageSelectorWrapper{
+        .langSl{
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-top: 10px;
+    
+            .sourceLan{
+                width: 310px;
+                label{
+                    font-size: 15px;
+                }
+                .css-b62m3t-container,.css-3iigni-container{
+                    font-size: 15px !important;
+                }
+            }
+        }
+    }
+    /* Uplaod file/files */
+    .uplaodFiles{
+        border: 2px dashed #ccc;
+        margin-top: 30px;
+        padding: 20px;
+        border-radius: 10px;
+
+        .uploadIcon{
+            width: 80px;
+            height: 80px;
+            fill: #F17D3A;
+        }
+
+        .first{
+            font-weight: 500;
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .supportFile{
+            font-size: 14px;
+            color: #666;
+        }
+        /* mapping uplaoded files */
+        .showAllLoadedFiles {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            margin-top: 20px;
+        
+            .file-card {
+                background: #ffffff;
+                border: 1px solid #e1e8ed;
+                border-radius: 10px;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                }
+        
+                .file-icon {
+                    display: flex;
+                    justify-content: center;
+                    color: #3498db;
+                    margin-bottom: 10px;
+        
+                    svg {
+                        width: 40px;
+                        height: 40px;
+                    }
+                }
+        
+                .file-info {
+                    text-align: center;
+        
+                    .file-name {
+                        color: #2c3e50;
+                        margin: 0 0 10px;
+                        font-size: 1rem;
+                        word-break: break-all;
+                    }
+                    
+                    .file-status {
+                        color: #27ae60;
+                        margin: 5px 0;
+                        font-size: 0.9rem;
+                    }
+                    
+                    .word-count {
+                        color: #7f8c8d;
+                        margin: 5px 0;
+                        font-size: 0.9rem;
+                    }
+                }
+        
+                .cancel-btn {
+                    background: #e74c3c;
+                    color: white;
+                    border: none;
+                    padding: 8px 15px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    transition: background 0.3s;
+                    margin-top: auto;
+                    &:hover {
+                        background: #c0392b;
+                    }
+                }
+            }
+        }
+    }
+    /* show uplaoded file/files */
+    .showUploadedFiles{
+        background: #e9edf1;
+        padding: 5px 20px;
+        margin-top: 30px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .sameClr{
+            color: #F17D3A;
+        }
+
+        .showUploadedFilesChild1{
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            button{
+                border: none;
+                background: #F17D3A;
+                padding: 10px 15px;
+                border-radius: 5px;
+                color: #fff;
+                cursor: pointer;
+                &:hover{
+                    background-color: #bd5c24;
+                }
+            }
+            p{
+                font-size: 15px;
+                font-weight: 500;
+                color: #666;
+            }
+        }
+
+        .totalWords{
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: -15px;
+            color: #666;
+
+        }
+        .totalUSD{
+            font-size: 15px;
+            font-weight: 600;
+            color: #666;
+        }
+    }
+    
 }
+
+
+
+
+
+
+
+
 
 
 

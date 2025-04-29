@@ -12,7 +12,6 @@ export default function App() {
 
     return (
         <div className='ftlContainer'>
-            <h2>Translation Uploader</h2>
             <LanguageSelector
                 sourceLanguage={sourceLanguage}
                 setSourceLanguage={setSourceLanguage}
@@ -25,13 +24,13 @@ export default function App() {
                 setTotalWords={setTotalWords}
                 sourceLanguage={sourceLanguage}
             />
+            
             <UploadedFiles
                 files={files}
                 setFiles={setFiles}
+                totalWords={totalWords}
                 setTotalWords={setTotalWords}
             />
-            <h3>Total Word Count: {totalWords}</h3>
-            <h3>Total USD: ${totalWords}</h3>
         </div>
     );
 }
