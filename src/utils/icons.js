@@ -17,7 +17,7 @@ export const fileIcons = {
     
     txt: <svg fill="#F17D3A" width={50} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
             <path d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160L224 0H64zM256 0v128h128L256 0zM128 352h128c13.3 0 24-10.7 24-24s-10.7-24-24-24H128c-13.3 0-24 10.7-24 24s10.7 24 24 24zm0-96h128c13.3 0 24-10.7 24-24s-10.7-24-24-24H128c-13.3 0-24 10.7-24 24s10.7 24 24 24z" />
-            <text x="144" y="460" fontSize="160" fontWeight="bold" fill="#fff">TXT</text>
+            <text x="144" y="460" fontSize="120" fontWeight="bold" fill="#fff">TXT</text>
         </svg>,
     
     pptx: <svg fill="#F17D3A" width={50} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">

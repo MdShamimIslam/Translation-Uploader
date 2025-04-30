@@ -18,6 +18,7 @@
         "react-dom": "^19.1.0",
         "react-dropzone": "^14.3.8",
         "react-select": "^5.10.1",
+        "sweetalert2": "^11.19.1",
         "xlsx": "^0.18.5"
     }
 }

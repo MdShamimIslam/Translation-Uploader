@@ -60,14 +60,54 @@ class Translation_Uploader{
         );
     }
 
-    public function translation_uploader_page() {
-        echo '<div id="translation-uploader-root"></div>';
-    }
-
     public function ftl_admin_enqueue_scripts($hook){ 
         if ( is_admin() && $hook !== 'toplevel_page_translation-uploader') return;
-        wp_enqueue_script( 'translation-uploader-js', FTL_DIR_URL . 'build/index.js', ['wp-element'], FTL_VERSION, true );
-        wp_enqueue_style( 'translation-uploader-css', FTL_DIR_URL . 'build/main.css', [], FTL_VERSION );
+        
+        // Enqueue SweetAlert2
+        wp_enqueue_style('sweetalert2', 'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css');
+        wp_enqueue_script('sweetalert2', 'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js', [], '11.7.32', true);
+        
+        // Your existing enqueues
+        wp_enqueue_script( 'translation-uploader-js', FTL_DIR_URL . 'build/index.js', ['wp-element', 'sweetalert2'], FTL_VERSION, true );
+        wp_enqueue_style( 'translation-uploader-css', FTL_DIR_URL . 'build/main.css', ['sweetalert2'], FTL_VERSION );
+    }
+
+    public function translation_uploader_page() {
+        echo '<div class="wrap">';
+        // Show welcome message when page loads
+        echo '<script>
+            document.addEventListener("DOMContentLoaded", function() {
+                Swal.fire({
+                    title: "Welcome",
+                    text: "Use shortcode [translation_uploader] to display on any page",
+                    icon: "info",
+                    confirmButtonText: "Got it!",
+                    confirmButtonColor: "#3085d6"
+                });
+            });
+        </script>';
+        echo '<style>
+            .wrap {
+                max-width: 900px;
+                margin: 0 auto;
+                padding: 40px;
+            }
+            #translation-uploader-root {
+                background: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                .sourceLan{
+                    width: 420px;
+                    label{
+                        display: block;
+                        margin: 10px 0;
+                    }
+                }
+            }
+        </style>';
+        echo '<div id="translation-uploader-root"></div>';
+        echo '</div>';
     }
 
     public function ftl_translation_uploader_shortcode() {
