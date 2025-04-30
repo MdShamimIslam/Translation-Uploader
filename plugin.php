@@ -23,6 +23,8 @@ class Translation_Uploader{
         add_action('admin_enqueue_scripts', [$this, 'ftl_admin_enqueue_scripts']);
         add_action('wp_enqueue_scripts', [$this, 'ftl_admin_enqueue_scripts']);
         add_shortcode('translation_uploader', [$this, 'ftl_translation_uploader_shortcode']);
+        add_action('wp_ajax_ftl_handle_file_upload', [$this, 'ftl_handle_file_upload']);
+        add_action('wp_ajax_nopriv_ftl_handle_file_upload', [$this, 'ftl_handle_file_upload']);
     }
 
     public static function get_instance(){
@@ -67,9 +69,16 @@ class Translation_Uploader{
         wp_enqueue_style('sweetalert2', 'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css');
         wp_enqueue_script('sweetalert2', 'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js', [], '11.7.32', true);
         
-        // Your existing enqueues
+        // Enqueues Translation uploader js and css
         wp_enqueue_script( 'translation-uploader-js', FTL_DIR_URL . 'build/index.js', ['wp-element', 'sweetalert2'], FTL_VERSION, true );
         wp_enqueue_style( 'translation-uploader-css', FTL_DIR_URL . 'build/main.css', ['sweetalert2'], FTL_VERSION );
+        
+        // Add WordPress ajax URL to be available in JS
+        wp_localize_script('translation-uploader-js', 'translationUploaderAjax', array(
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('translation_uploader_nonce')
+        ));
+    
     }
 
     public function translation_uploader_page() {
@@ -79,8 +88,7 @@ class Translation_Uploader{
             document.addEventListener("DOMContentLoaded", function() {
                 Swal.fire({
                     title: "Welcome",
-                    text: "Use shortcode [translation_uploader] to display on any page",
-                    icon: "info",
+                    html: "<h3 style=\'font-size: 1.2em; margin: 10px 0;\'>Translation Uploader</h3>Use shortcode <strong>[translation_uploader]</strong> to display on any page",                    icon: "info",
                     confirmButtonText: "Got it!",
                     confirmButtonColor: "#3085d6"
                 });
@@ -114,6 +122,49 @@ class Translation_Uploader{
         ob_start();
         echo '<div id="translation-uploader-root"></div>';
         return ob_get_clean();
+    }
+
+    public function ftl_handle_file_upload() {
+        if (!function_exists('wp_handle_upload')) {
+            require_once(ABSPATH . 'wp-admin/includes/file.php');
+        }
+        if (!function_exists('wp_generate_attachment_metadata')) {
+            require_once(ABSPATH . 'wp-admin/includes/image.php');
+        }
+        if (!function_exists('media_handle_upload')) {
+            require_once(ABSPATH . 'wp-admin/includes/media.php');
+        }
+
+        $file = $_FILES['file'];
+        $upload_overrides = array('test_form' => false);
+        
+        // Upload the file
+        $movefile = wp_handle_upload($file, $upload_overrides);
+        
+        if ($movefile && !isset($movefile['error'])) {
+            // Prepare attachment data
+            $attachment = array(
+                'post_mime_type' => $movefile['type'],
+                'post_title' => sanitize_file_name($file['name']),
+                'post_content' => '',
+                'post_status' => 'inherit'
+            );
+
+            // Insert attachment
+            $attach_id = wp_insert_attachment($attachment, $movefile['file']);
+            
+            // Generate metadata
+            $attach_data = wp_generate_attachment_metadata($attach_id, $movefile['file']);
+            wp_update_attachment_metadata($attach_id, $attach_data);
+
+            wp_send_json_success([
+                'message' => 'File uploaded successfully',
+                'attachment_id' => $attach_id,
+                'url' => $movefile['url']
+            ]);
+        } else {
+            wp_send_json_error(['message' => $movefile['error']]);
+        }
     }
  }
  

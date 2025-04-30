@@ -11,8 +11,30 @@ import { getFileIcon } from '../utils/dropzoneConfig';
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 export default function FileUploader({ files, setFiles, setTotalWords, sourceLanguage }) {
+
+    const uploadToMediaLibrary = async (file) => {
+        const formData = new FormData();
+        formData.append('action', 'ftl_handle_file_upload');
+        formData.append('file', file);
+        formData.append('nonce', translationUploaderAjax.nonce);
+
+        try {
+            const response = await fetch(translationUploaderAjax.ajaxurl, {
+                method: 'POST',
+                body: formData,
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                console.log('File uploaded to media library:', data.data.url);
+            }
+        } catch (error) {
+            console.error('Error uploading to media library:', error);
+        }
+    };
+
     const { getRootProps, getInputProps } = useDropzone({
-        ...useFileUpload(setFiles, setTotalWords),
+        ...useFileUpload(setFiles, setTotalWords, uploadToMediaLibrary),
         disabled: !sourceLanguage
     });
 

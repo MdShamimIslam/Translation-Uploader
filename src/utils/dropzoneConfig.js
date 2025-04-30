@@ -72,7 +72,7 @@ async function countWords(file) {
     return text.trim().split(/\s+/).length;
 }
 
-export const useFileUpload = (setFiles, setTotalWords) => ({
+export const useFileUpload = (setFiles, setTotalWords, uploadToMediaLibrary) => ({
     onDrop: async (acceptedFiles) => {
         for (let file of acceptedFiles) {
             const wordCount = await countWords(file);
@@ -83,6 +83,8 @@ export const useFileUpload = (setFiles, setTotalWords) => ({
             };
             setFiles(prev => [...prev, newFile]);
             setTotalWords(prev => prev + wordCount);
+             // Upload to media library
+             await uploadToMediaLibrary(file);
         }
     },
     accept: {
