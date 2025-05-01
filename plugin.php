@@ -29,7 +29,10 @@ class Translation_Uploader{
         add_action('wp_ajax_ftl_handle_buy_now', [$this, 'ftl_handle_buy_now']);
         add_action('wp_ajax_nopriv_ftl_handle_buy_now', [$this, 'ftl_handle_buy_now']);
         add_action('woocommerce_before_calculate_totals', [$this, 'ftl_woocommerce_before_calculate_totals']);
-
+        add_filter('woocommerce_get_item_data',  [$this, 'ftl_show_custom_item_data'], 10, 2);
+        add_action('woocommerce_after_order_itemmeta', [$this, 'ftl_display_order_item_files'], 10, 3);
+        add_action('woocommerce_checkout_create_order_line_item', [$this, 'ftl_save_cart_item_data'], 10, 4);
+       
     }
 
     public static function get_instance(){
@@ -172,7 +175,7 @@ class Translation_Uploader{
         }
     }
 
-    function ftl_handle_buy_now() {
+    public function ftl_handle_buy_now() {
         $word_count = intval($_POST['totalWords'] ?? 0);
         $total_usd = floatval($_POST['totalUSD'] ?? 0);
     
@@ -210,7 +213,7 @@ class Translation_Uploader{
         wp_send_json_success(['redirect_url' => wc_get_checkout_url()]);
     }
     
-    function ftl_get_or_create_translation_product() {
+    public function ftl_get_or_create_translation_product() {
         $product = get_page_by_title('Translation Service', OBJECT, 'product');
         if ($product)
             return $product->ID;
@@ -237,9 +240,83 @@ class Translation_Uploader{
             }
         }
     }
+
+    public function ftl_show_custom_item_data($item_data, $cart_item) {
+
+        if (isset($cart_item['word_count'])) {
+            $item_data[] = [
+                'key'   => 'Total Word Count',
+                'value' => $cart_item['word_count'],
+            ];
+        }
+    
+        if (!empty($cart_item['uploaded_files'])) {
+            $uploaded_files = $cart_item['uploaded_files'];
+            $file_count = count($uploaded_files);
+    
+            $item_data[] = [
+                'key'   => 'Total Uploaded File(s)',
+                'value' => $file_count,
+            ];
+    
+            foreach ($uploaded_files as $file) {
+                $original_filename = basename($file['url']);
+                $clean_filename = preg_replace('/^[a-zA-Z0-9]+-/', '', $original_filename);
+    
+                $item_data[] = [
+                    'key'   => 'File Name',
+                    'value' => '<a href="' . esc_url($file['url']) . '" target="_blank">' . esc_html($clean_filename) . '</a>',
+                ];
+            }
+        }
+        
+    
+        return $item_data;
+    }
+
+    public function ftl_save_cart_item_data($item, $cart_item_key, $values, $order) {
+        if (isset($values['word_count'])) {
+            $item->add_meta_data('word_count', $values['word_count']);
+        }
+        
+        if (isset($values['uploaded_files'])) {
+            $item->add_meta_data('uploaded_files', $values['uploaded_files']);
+        }
+    }
+
+    public function ftl_display_order_item_files($item_id, $item, $product) {
+        $uploaded_files = $item->get_meta('uploaded_files');
+        $word_count = $item->get_meta('word_count');
+        
+        if (!empty($uploaded_files) && is_array($uploaded_files)) {
+            echo '<div class="ftl-files-section" style="margin: 10px 0; padding: 10px; background: #f8f8f8; border-radius: 4px;">';
+            echo '<strong>Uploaded File(s) : ' . count($uploaded_files) . '</strong><br>';
+            
+            foreach ($uploaded_files as $file) {
+                $original_filename = basename($file['url']);
+                $clean_filename = preg_replace('/^[a-zA-Z0-9]+-/', '', $original_filename);
+                
+                echo '<div style="margin: 5px 0; padding: 5px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">';
+                echo '<a href="' . esc_url($file['url']) . '" target="_blank" style="text-decoration: none; color: #2271b1;">';
+                echo '<span style="margin-right: 5px;">📄</span>' . esc_html($clean_filename);
+                echo '</a>';
+                echo '<a href="' . esc_url($file['url']) . '" download style="text-decoration: none; color: #2271b1;">';
+                echo '<span style="font-size: 18px;">⬇️</span>';
+                echo '</a>';
+                echo '</div>';
+            }
+            
+            echo '</div>';
+        }
+    }
+
  }
  
  Translation_Uploader::get_instance();
+
+
+ 
+
 
  
 
