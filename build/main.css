@@ -127,7 +127,6 @@
                         font-size: 0.9rem;
                     }
                 }
-        
                 .cancel-btn {
                     background: #e74c3c;
                     color: white;
@@ -141,6 +140,7 @@
                         background: #c0392b;
                     }
                 }
+                
             }
         }
     }
@@ -192,6 +192,62 @@
             font-size: 15px;
             font-weight: 600;
             color: #666;
+        }
+    }
+
+    .showUploadedFile{
+        border: none;
+        background: #F17D3A;
+        padding: 10px 15px;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        justify-content:center;
+        width: 30%;
+        margin: 20px auto;
+        font-size: 16px;
+    }
+    .buyNow{
+        border: none;
+        background: #316835;
+        padding: 10px 15px;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 600;
+        margin-top: 10px;
+        &:hover{
+            background-color: #224827;
+        }
+    }
+
+    .showAllLoadedFiles {
+        margin-top: 20px;
+        background: #aa9a9a1a;
+        padding: 30px;
+        border-radius: 5px;
+    
+        .file-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #d6d9e7c2;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+
+             .file-name {
+                color: #7f8c8d;
+                margin: 5px 0;
+                font-size: 0.9rem;
+                }
+                .word-count {
+                    color: #7f8c8d;
+                    margin: 5px 0;
+                    font-size: 0.9rem;
+                }
         }
     }
     

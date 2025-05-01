@@ -63,7 +63,8 @@ export default function FileUploader({ files, setFiles, setTotalWords, sourceLan
     };
 
     // Keep this first showAllFiles definition
-    const showAllFiles = <div className='showAllLoadedFiles'>
+    const showAllFiles =<>
+    {files?.length > 0 && <div className='showAllLoadedFiles'>
         {files?.map((file) => (
             <div key={file.id} className='file-card'>
                 <div className='file-icon'>{getFileIcon(file.file.name)}</div>
@@ -80,7 +81,8 @@ export default function FileUploader({ files, setFiles, setTotalWords, sourceLan
                 </button>
             </div>
         ))}
-    </div>
+    </div> } 
+    </>
 
     const uploadedDoc =  <>
                         <div style={{marginTop:'20px'}} className='sourceLang'>

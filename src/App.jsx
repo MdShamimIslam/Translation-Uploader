@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import LanguageSelector from './components/LanguageSelector';
 import FileUploader from './components/FileUploader';
-import UploadedFiles from './components/UploadedFiles';
+import UploadedFiles from './components/uploadedfiles';
 import './App.css';
 
 export default function App() {
