@@ -17,6 +17,9 @@ class Translation_Uploader{
     private static $instance;
  
     private function __construct(){
+        // Add WooCommerce dependency check
+        add_action('admin_notices', [$this, 'ftl_check_woocommerce']);
+        
         register_activation_hook(__FILE__, [$this, 'ftl_plugin_activation']);
         add_action('admin_init', [$this, 'ftl_plugin_redirect']);
         add_action('admin_menu', [$this, 'ftl_admin_menu']);
@@ -310,9 +313,24 @@ class Translation_Uploader{
         }
     }
 
+    public function ftl_check_woocommerce() {
+        if (!class_exists('WooCommerce')) {
+            ?>
+            <div class="notice notice-error is-dismissible">
+                <p>
+                    <?php 
+                    _e('Translation Uploader requires WooCommerce to be installed and activated. Please install and activate WooCommerce to use payment features.', 'translation-uploader'); 
+                    ?></p>
+            </div>
+            <?php
+        }
+    }
+
  }
  
  Translation_Uploader::get_instance();
+
+    
 
 
  
