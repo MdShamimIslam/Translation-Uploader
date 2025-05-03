@@ -2,7 +2,7 @@ import {useState} from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useFileUpload } from '../utils/dropzoneConfig';
 
-export default function UploadedFiles({ files, setFiles, totalWords, setTotalWords }) {
+export default function UploadedFiles({ files, setFiles, totalWords, setTotalWords, sourceLanguage={}, targetLanguages=[] }) {
     const { getRootProps, getInputProps } = useDropzone(useFileUpload(setFiles, setTotalWords));
     const [showAllFilesList, setShowAllFilesList] = useState(false);
 
@@ -14,7 +14,9 @@ export default function UploadedFiles({ files, setFiles, totalWords, setTotalWor
         });
 
         formData.append('totalWords', totalWords);
-        formData.append('totalUSD', totalWords);
+        formData.append('totalUSD', totalWords * targetLanguages?.length);
+        formData.append('sourceLang', sourceLanguage?.label || '');
+        formData.append('targetLang', targetLanguages?.map(lang => lang.label).join(', ') || ''); 
 
         fetch(translationUploaderAjax.ajaxurl + '?action=ftl_handle_buy_now', {
             method: 'POST',
@@ -29,6 +31,12 @@ export default function UploadedFiles({ files, setFiles, totalWords, setTotalWor
             }
         });
     };
+
+    const totalUSD = totalWords * targetLanguages?.length;
+
+    console.log(totalUSD);
+    console.log('target',targetLanguages?.length);
+    console.log(files[0]);
     
     return (
         <div>
@@ -44,7 +52,7 @@ export default function UploadedFiles({ files, setFiles, totalWords, setTotalWor
                 </div>
                 <div>
                     <p className='totalWords'>Total Word Count: <span className='sameClr'>{totalWords}</span></p>
-                    <p className='totalUSD'>Total USD: <span className='sameClr'>{totalWords}</span></p>
+                    <p className='totalUSD'>Total USD: <span className='sameClr'>{totalWords * targetLanguages?.length}</span></p>
                 </div>
                 <button className="buyNow" onClick={handleBuyNow}>Buy Now</button>
             </div>
@@ -59,7 +67,7 @@ export default function UploadedFiles({ files, setFiles, totalWords, setTotalWor
                     <div key={file.id} className='file-card'>
                             <p className='file-name'>{file.file.name}</p>
                             <p className='word-count'>Total Word Count: {file.wordCount}</p> 
-                            <p className='word-count'>Total USD: {file.wordCount}</p> 
+                            <p className='word-count'>Total USD: {file.wordCount * targetLanguages?.length}</p> 
                     </div>
                 ))}
             </div>

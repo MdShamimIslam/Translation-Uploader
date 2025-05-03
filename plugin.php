@@ -181,6 +181,8 @@ class Translation_Uploader{
     public function ftl_handle_buy_now() {
         $word_count = intval($_POST['totalWords'] ?? 0);
         $total_usd = floatval($_POST['totalUSD'] ?? 0);
+        $source_lang = sanitize_text_field($_POST['sourceLang'] ?? '');
+        $target_lang = sanitize_text_field($_POST['targetLang'] ?? '');
     
         $uploaded_files = [];
     
@@ -211,6 +213,8 @@ class Translation_Uploader{
             'uploaded_files' => $uploaded_files,
             'word_count' => $word_count,
             'total_usd' => $total_usd,
+            'source_lang' => $source_lang,
+            'target_lang' => $target_lang,
         ]);
     
         wp_send_json_success(['redirect_url' => wc_get_checkout_url()]);
@@ -252,6 +256,20 @@ class Translation_Uploader{
                 'value' => $cart_item['word_count'],
             ];
         }
+
+        if (isset($cart_item['source_lang'])) {
+            $item_data[] = [
+                'key'   => 'Source Language',
+                'value' => $cart_item['source_lang'],
+            ];
+        }
+        
+        if (isset($cart_item['target_lang'])) {
+            $item_data[] = [
+                'key'   => 'Target Language',
+                'value' => $cart_item['target_lang'],
+            ];
+        }
     
         if (!empty($cart_item['uploaded_files'])) {
             $uploaded_files = $cart_item['uploaded_files'];
@@ -285,11 +303,28 @@ class Translation_Uploader{
         if (isset($values['uploaded_files'])) {
             $item->add_meta_data('uploaded_files', $values['uploaded_files']);
         }
+
+        if (isset($values['source_lang'])) {
+            $item->add_meta_data('source_lang', $values['source_lang']);
+        }
+        
+        if (isset($values['target_lang'])) {
+            $item->add_meta_data('target_lang', $values['target_lang']);
+        }
     }
 
     public function ftl_display_order_item_files($item_id, $item, $product) {
         $uploaded_files = $item->get_meta('uploaded_files');
         $word_count = $item->get_meta('word_count');
+        $source_lang = $item->get_meta('source_lang');
+        $target_lang = $item->get_meta('target_lang');
+
+        // if ($source_lang) {
+        //     echo '<p><strong>Source Language:</strong> ' . esc_html($source_lang) . '</p>';
+        // }
+        // if ($target_lang) {
+        //     echo '<p><strong>Target Language:</strong> ' . esc_html($target_lang) . '</p>';
+        // }
         
         if (!empty($uploaded_files) && is_array($uploaded_files)) {
             echo '<div class="ftl-files-section" style="margin: 10px 0; padding: 10px; background: #f8f8f8; border-radius: 4px;">';

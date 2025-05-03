@@ -10,8 +10,7 @@ import { getFileIcon } from '../utils/dropzoneConfig';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
-export default function FileUploader({ files, setFiles, setTotalWords, sourceLanguage }) {
-
+export default function FileUploader({ files, setFiles, setTotalWords, sourceLanguage, targetLanguages }) {  // Add targetLanguages prop
     const uploadToMediaLibrary = async (file) => {
         const formData = new FormData();
         formData.append('action', 'ftl_handle_file_upload');
@@ -35,7 +34,19 @@ export default function FileUploader({ files, setFiles, setTotalWords, sourceLan
 
     const { getRootProps, getInputProps } = useDropzone({
         ...useFileUpload(setFiles, setTotalWords, uploadToMediaLibrary),
-        disabled: !sourceLanguage
+        onDrop: (acceptedFiles) => {
+            if (!sourceLanguage || !targetLanguages?.length) {
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Please select both source and target languages before uploading files',
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                });
+                return;
+            }
+            useFileUpload(setFiles, setTotalWords, uploadToMediaLibrary).onDrop(acceptedFiles);
+        },
+        disabled: !sourceLanguage || !targetLanguages?.length
     });
 
 
@@ -95,13 +106,13 @@ export default function FileUploader({ files, setFiles, setTotalWords, sourceLan
                     </>
     
 
-    if (!sourceLanguage) {
+    if (!sourceLanguage || !targetLanguages?.length) {
         return (
             <>
             {uploadedDoc}
             <div style={{textAlign:'center'}} className='uplaodFiles'>
                {uploadIcon}
-                <p className='first'>Please select a source language first</p>
+                <p className='first'>Please select both source & target languages first</p>
                 <p className='supportFile'>Supported files</p>
                <img src={supportIcons} alt="support-files-icons" />
             </div>
@@ -124,5 +135,6 @@ export default function FileUploader({ files, setFiles, setTotalWords, sourceLan
         </>
     );
 }
+
 
 
