@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import FileUploader from './components/FileUploader';
 import './App.css';
 import LanguageSelector from './components/LanguageSelector';
-import UploadedFiles from './components/uploadedfiles';
+import Category from './components/Category';
+import UploadedFiles from './components/UploadedFiles';
 
 export default function App() {
     const [sourceLanguage, setSourceLanguage] = useState(null);
     const [targetLanguages, setTargetLanguages] = useState([]);
     const [files, setFiles] = useState([]);
     const [totalWords, setTotalWords] = useState(0);
-
-    console.log( 'App', sourceLanguage, targetLanguages);
-
-    
+    const [selectedCategory, setSelectedCategory] = useState(null)
 
     return (
         <div className='ftlContainer'>
@@ -37,6 +35,12 @@ export default function App() {
                 setTotalWords={setTotalWords}
                 sourceLanguage={sourceLanguage}
                 targetLanguages={targetLanguages}
+                selectedCategory={selectedCategory}
+            />
+
+            <Category 
+                selectedCategory={selectedCategory} 
+                setSelectedCategory={setSelectedCategory} 
             />
         </div>
     );

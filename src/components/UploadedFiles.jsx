@@ -2,9 +2,11 @@ import {useState} from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useFileUpload } from '../utils/dropzoneConfig';
 
-export default function UploadedFiles({ files, setFiles, totalWords, setTotalWords, sourceLanguage={}, targetLanguages=[] }) {
+export default function UploadedFiles({ files, setFiles, totalWords, setTotalWords, sourceLanguage={}, targetLanguages=[], selectedCategory = '' }) {
     const { getRootProps, getInputProps } = useDropzone(useFileUpload(setFiles, setTotalWords));
     const [showAllFilesList, setShowAllFilesList] = useState(false);
+
+    console.log(selectedCategory);
 
     const handleBuyNow = () => {
         const formData = new FormData();
@@ -31,12 +33,6 @@ export default function UploadedFiles({ files, setFiles, totalWords, setTotalWor
             }
         });
     };
-
-    const totalUSD = totalWords * targetLanguages?.length;
-
-    console.log(totalUSD);
-    console.log('target',targetLanguages?.length);
-    console.log(files[0]);
     
     return (
         <div>
@@ -72,6 +68,7 @@ export default function UploadedFiles({ files, setFiles, totalWords, setTotalWor
                 ))}
             </div>
            </> : '' }
+
         </div>
     );
 }
