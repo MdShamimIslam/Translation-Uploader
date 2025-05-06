@@ -102,3 +102,20 @@ export const languageOptions = [
     { value: 'yo', label: 'Yoruba' },
     { value: 'zu', label: 'Zulu' },
 ];
+
+export  const categories = [
+    { id: 0, name: "General Text", icon: "📝" },
+    { id: 1, name: "Website", icon: "🌐" },
+    { id: 2, name: "Software/IT", icon: "💻" },
+    { id: 3, name: "Travel", icon: "✈️" },
+    { id: 4, name: "Legal", icon: "📜" },
+    { id: 5, name: "Business/Finance", icon: "💰" },
+    { id: 6, name: "Marketing / Media", icon: "📣" },
+    { id: 7, name: "Medicine / Healthcare", icon: "💊" },
+    { id: 8, name: "Art / Music", icon: "🎵" },
+    { id: 9, name: "Gaming / Video Games", icon: "🎮" },
+    { id: 10, name: "Engineering / Technical", icon: "🎓" },
+    { id: 11, name: "Education / Learning", icon: "📚" },
+    { id: 12, name: "Food / Catering", icon: "🍽️" },
+    { id: 13, name: "Fashion / Lifestyle", icon: "👤" }
+]

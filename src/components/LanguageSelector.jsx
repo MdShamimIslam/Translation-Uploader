@@ -41,8 +41,8 @@ export default function LanguageSelector({ sourceLanguage, setSourceLanguage, ta
                     {showSourcePopup && (
                         <div className="language-popup">
                             <div className="popup-header">
-                                <h3>Select Source languages (You can select one)</h3>
-                                <button onClick={() => setShowSourcePopup(false)}>×</button>
+                                <h3>Select Source languages (You can select one or mor)</h3>
+                                <button onClick={() => setShowSourcePopup(false)}>Confirm</button>
                             </div>
                             <div className="language-grid">
                                 {languageOptions.map(lang => (
@@ -85,8 +85,8 @@ export default function LanguageSelector({ sourceLanguage, setSourceLanguage, ta
                     {showTargetPopup && (
                         <div className="language-popup">
                             <div className="popup-header">
-                                <h3>Select target languages (You can select multiple)</h3>
-                                <button onClick={() => setShowTargetPopup(false)}>×</button>
+                                <h3>Select target languages (You can select multiple language(s))</h3>
+                                <button onClick={() => setShowTargetPopup(false)}>Confirm</button>
                             </div>
                             <div className="language-grid">
                                 {languageOptions

@@ -286,18 +286,26 @@
         margin: 20px auto;
         font-size: 16px;
     }
-    .buyNow{
+    .checkoutBtn{
+        display: flex  ;
         margin-top: 10px;
-        padding: 5px 20px;
-        background-color: #F17D3A;
-        color: rgb(255, 255, 255);
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        &:hover{
-            background-color: #9e4714;
+        justify-content: center;
+        .buyNow{
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #F17D3A;
+            color: rgb(255, 255, 255);
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            &:hover{
+                background-color: #9e4714;
+            }
         }
     }
+   
     .showAllLoadedFiles {
         margin-top: 20px;
         background: #aa9a9a1a;

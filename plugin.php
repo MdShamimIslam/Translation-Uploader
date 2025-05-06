@@ -183,6 +183,9 @@ class Translation_Uploader{
         $total_usd = floatval($_POST['totalUSD'] ?? 0);
         $source_lang = sanitize_text_field($_POST['sourceLang'] ?? '');
         $target_lang = sanitize_text_field($_POST['targetLang'] ?? '');
+        $category = sanitize_text_field($_POST['category'] ?? '');
+
+        // echo $category;
     
         $uploaded_files = [];
     
@@ -215,6 +218,7 @@ class Translation_Uploader{
             'total_usd' => $total_usd,
             'source_lang' => $source_lang,
             'target_lang' => $target_lang,
+            'category' => $category
         ]);
     
         wp_send_json_success(['redirect_url' => wc_get_checkout_url()]);
@@ -270,6 +274,13 @@ class Translation_Uploader{
                 'value' => $cart_item['target_lang'],
             ];
         }
+
+        if (isset($cart_item['category'])) {
+            $item_data[] = [
+                'key'   => 'Category',
+                'value' => $cart_item['category'],
+            ];
+        }
     
         if (!empty($cart_item['uploaded_files'])) {
             $uploaded_files = $cart_item['uploaded_files'];
@@ -299,10 +310,6 @@ class Translation_Uploader{
         if (isset($values['word_count'])) {
             $item->add_meta_data('word_count', $values['word_count']);
         }
-        
-        if (isset($values['uploaded_files'])) {
-            $item->add_meta_data('uploaded_files', $values['uploaded_files']);
-        }
 
         if (isset($values['source_lang'])) {
             $item->add_meta_data('source_lang', $values['source_lang']);
@@ -310,6 +317,13 @@ class Translation_Uploader{
         
         if (isset($values['target_lang'])) {
             $item->add_meta_data('target_lang', $values['target_lang']);
+        }
+        if (isset($values['category'])) {
+            $item->add_meta_data('Category', $values['category']);
+        }
+
+        if (isset($values['uploaded_files'])) {
+            $item->add_meta_data('uploaded_files', $values['uploaded_files']);
         }
     }
 
@@ -342,9 +356,11 @@ class Translation_Uploader{
                 echo '<span style="font-size: 18px;">⬇️</span>';
                 echo '</a>';
                 echo '</div>';
+				
             }
             
             echo '</div>';
+			echo 'Uploaded translation documents';
         }
     }
 
